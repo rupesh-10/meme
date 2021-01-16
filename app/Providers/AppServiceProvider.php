@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +14,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        Carbon::macro('shorterDiffForHumans', static function () {
+            $diff = self::this()->diffForHumans(...func_get_args());
+            return strtr($diff, ['second' => 'sec', 'minute' => 'min', 'hour' => 'hr']);
+        });
     }
 
     /**

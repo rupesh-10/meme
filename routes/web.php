@@ -21,7 +21,7 @@ Route::get('/', function () {
 Route::post('/connect/{id}', 'ConnectionController@connect');
 Route::get('/like/{id}', 'LikeDislikeController@like');
 Route::get('/dislike/{id}', 'LikeDislikeController@dislike');
-
+Route::post('/comment/{id}', "CommentController@store");
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

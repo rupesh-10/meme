@@ -64,6 +64,11 @@ class User extends Authenticatable
         return $this->hasMany(Meme::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function likeDislikeRatio()
     {
         $totalLikes = 0;
