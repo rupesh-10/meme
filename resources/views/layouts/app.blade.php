@@ -24,19 +24,21 @@
     @yield('css')
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm w-100" style="position: fixed; z-index:1000;">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
+                <button style="outline: none;" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon" ></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
+                    <ul class="navbar-nav ml-auto pt-2">
+                        <li class="nav-item">
                         <input type="text" class="form-control" placeholder="Search...">
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -57,7 +59,7 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                  <img src="{{ auth()->user()->profile->profileImage() ?? asset("images/profile.png") }}" class="rounded-circle" width="35" height="35">  {{ Auth::user()->name }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -77,7 +79,7 @@
                                 </div>
                             </li>
                         @endguest
-                        <li class="nav-item ml-3">
+                        <li class="nav-item ml-3 text-right">
                             <a class="btn btn-primary" href="{{ action("MemeController@create") }}">Create Meme</a>
                         </li>
                     </ul>
@@ -85,7 +87,7 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-5">
             @yield('content')
         </main>
     </div>

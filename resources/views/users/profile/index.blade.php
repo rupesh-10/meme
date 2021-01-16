@@ -16,7 +16,7 @@
 </style>
 @endsection
 @section('content')
-<div class="container">
+<div class="container pt-5">
     <div class="row justify-content-center">
         <div class="col-md-9">
             <div class="profile-head row pb-2">
@@ -41,7 +41,7 @@
                     <div class="d-flex"  style="">
                         <span class="pl-2"> <strong>{{ count($profile->user->memes) }}</strong> Memes </span>
                         <span class="pl-2"> <strong>{{ count($profile->user->connected) }}</strong> Connection </span>
-                        <span class="pl-2"> <strong>1.3</strong> L/D </span>
+                        <span class="pl-2"> <strong>{{ $profile->user->likeDislikeRatio() }}</strong> L/D </span>
                     </div>
                 </div>
             </div>

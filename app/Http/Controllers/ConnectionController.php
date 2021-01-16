@@ -18,6 +18,6 @@ class ConnectionController extends Controller
     {
         $user = User::find($id);
         $currentUser = User::findorFail(auth()->user()->id);
-        return $currentUser->connected()->toggle($user->profile->id);
+        return $currentUser->connected()->toggle($user->profile->id) && $currentUser->profile->connections()->toggle($user->id);
     }
 }

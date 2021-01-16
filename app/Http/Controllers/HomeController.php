@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Meme;
 use Carbon\Carbon;
+use App\Models\Like;
 
 class HomeController extends Controller
 {

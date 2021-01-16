@@ -63,4 +63,22 @@ class User extends Authenticatable
     {
         return $this->hasMany(Meme::class);
     }
+
+    public function likeDislikeRatio()
+    {
+        $totalLikes = 0;
+        $totalDislikes = 0;
+        $memes = $this->memes()->get();
+
+        foreach ($memes as $meme) {
+            $totalLikes += $meme->totalLikes();
+            $totalDislikes += $meme->totalDislikes();
+        }
+
+        if ($totalDislikes == 0) {
+            return $totalLikes;
+        }
+
+        return round($totalLikes / $totalDislikes, 2);
+    }
 }
