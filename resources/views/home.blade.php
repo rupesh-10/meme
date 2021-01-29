@@ -34,21 +34,20 @@
                 @endif
 
                 <div class="text-center p-3 d-flex">
-                  <a class="p-2 d-flex text-dark" href="{{ action("LikeDislikeController@like",$meme->id) }}">
-                    <i class="@if($meme->liked()) text-danger fas fa-heart @else far fa-heart @endif  fa-2x"></i><span class="pl-2">{{ $meme->totalLikes() }}</span>
-                  </a>
-                   <a class="p-2 d-flex text-dark" data-toggle="collapse" href="#comment{{ $meme->id }}" role="button" aria-expanded="false" aria-controls="collapseExample"> <i class="far fa-comment fa-2x text-secondary"></i><span class="pl-2"> {{ count($meme->comments) }} </span>
-                  <a class="p-2 d-flex text-dark" href="{{ action("LikeDislikeController@dislike",$meme->id) }}"> <i class="fa-2x @if($meme->disliked()) fas fa-thumbs-down text-primary @else far fa-thumbs-down text-dark @endif"></i><span class="pl-2">{{ $meme->totalDislikes() }}</span> </a>
+                 
+                    <like-component meme-id="{{ $meme->id }} disliked= {{ $meme->disliked() }}"></like-component>   <span class="pl-2">{{ $meme->totalLikes() }}</span>
+                   <a class="p-2 d-flex text-dark" data-toggle="collapse" href="#comment{{ $meme->id }}" role="button" aria-expanded="false" aria-controls="collapseExample"> <i class="far fa-comment fa-2x text-secondary"></i><span class="pl-2"> {{ count($meme->comments) }} </span></a>
+                  <dislike-component meme-id="{{ $meme->id }}" disliked={{ $meme->disliked() }}></dislike-component><span class="pl-2">{{ $meme->totalDislikes() }}</span>
                 </div>
                 <div class="collapse" id="comment{{ $meme->id }}">
                     <div class="card card-body">
                         <form action="{{ action('CommentController@store',$meme->id) }}" method="post">
                             @csrf
-                        <input name="comment" id="comment" class="form-control rounded" placeholder="Write a comment" style="border-radius:20px;">
+                        <input name="comment" class="form-control rounded" placeholder="Write a comment" style="border-radius:20px;">
                         </form>
                     </div>
 
-                    @if($meme->comments)
+                    @if(count($meme->comments))
                     <h4 class="ml-4 mt-2">Comments: </h4>
                     @endif
 
@@ -63,15 +62,52 @@
                             <h6 class="pl-2 pt-1" style="font-weight: 800;">{{ $comment->commentator->name }}</h6>
                         </div>
                         <div class="ml-4 pl-1"> 
-                           <span class="p-1" style="font-size:15px;"> {{ $comment->content }} </span>
+                           <span class="p-1 commentContent{{ $comment->id }}" style="font-size:15px;"> {{ $comment->content }} </span>
+                           <form class="editComment{{ $comment->id }}" action="{{ action("CommentController@update",$comment->id) }}" style="display:none;" method="post">
+                            @method("post")
+                            @csrf
+                           <input class="form-control rounded" type="text" value="{{ $comment->content }}" name="content">
+                           <a class="cancel pl-2" data-id="{{ $comment->id }}" style="cursor: pointer;">Cancel</a>
+                           </form>
                         </div>
                     </div>
                       <div class="d-flex ml-3 pl-2 pb-1">
                             <strong>{{ $comment->commentedAgo() }}</strong>
-                                <a href="#" class="pl-2">like</a>
+                                <a href="#" class="pl-2">Like</a>
                                 <a class="pl-2" href="#">Reply</a>
+                                @can('update',$comment) 
+                                <div class="btn-group dropright">
+                                <a class="pl-2 popup" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="true"><i class="fas fa-ellipsis-h" style="font-size:19px;"></i></a>
+                                <div class="ml-2 dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="ml-2 edit" data-id="{{ $comment->id }}" style="cursor: pointer;"><i class="fa fa-edit" href=""></i> Edit</a>
+                                    <a class="ml-2 delete" data-toggle="modal" data-target="#smallModal" style="cursor: pointer;"><i class="fa fa-trash"></i> Delete</a>
+                                </div>
+                                </div>
+                                <div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+                                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="myModalLabel">Delete Comment</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h5>Are you sure you want to delete this comment?</h5>
+                                            <form action="{{ action("CommentController@destroy",$comment->id) }}" method="post">
+                                            @method('delete')
+                                            @csrf
+                                                <div class="text-right">
+                                                <a  class="text-info" data-dismiss="modal" style="cursor: pointer;"><strong>Cancel</strong></a>
+                                                <button class="btn btn-primary ml-2">Confirm</button>
+                                                </div>
+                                             </form>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endcan
                         </div>
-                  
                     @endforeach
                 </div>
                 </div>
@@ -82,7 +118,17 @@
 </div>
 @section('js')
 <script>
-
+   
+    $(document).on('click','.edit',function(){
+       let elm = $(this)
+       $('.commentContent'+elm.data('id')).hide();
+       $('.editComment'+elm.data('id')).show();
+    })
+    $(document).on("click",'.cancel',function(){
+         let elm = $(this)
+        $('.commentContent'+elm.data('id')).show();
+        $('.editComment'+elm.data('id')).hide();
+    })
 </script>
 @endsection
 @endsection

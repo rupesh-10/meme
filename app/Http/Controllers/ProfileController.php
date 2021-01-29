@@ -37,14 +37,15 @@ class ProfileController extends Controller
         if ($request->hasFile('image')) {
             Storage::disk('public')->delete($profile->image);
             $imagePath = $request['image']->store('profile_images', 'public');
+            $image = Image::make(public_path('/storage' . $imagePath))->fit(600, 600);
+            $image->save();
         }
 
-        $image = Image::make(public_path('/storage' . $imagePath))->fit(600, 600);
-        $image->save();
+
 
         $profile->update([
             'bio' => $request['bio'],
-            'image' => $imagePath,
+            'image' => $imagePath ?? '',
 
         ]);
         return redirect()->action('ProfileController@show', $profile->id)->with("success", 'Profile Updated');

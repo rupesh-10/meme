@@ -8,6 +8,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 import Connect from './components/ConnectComponent';
+import Dislike from './components/DislikeComponent';
 
 /**
  * The following block of code may be used to automatically register your
@@ -33,5 +34,6 @@ const app = new Vue({
     el: '#app',
     components:{
         'connect-component':Connect,
+        'dislike-component':Dislike,
     }
 });

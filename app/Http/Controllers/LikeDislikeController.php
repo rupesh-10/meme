@@ -7,6 +7,11 @@ use App\Models\Meme;
 
 class LikeDislikeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function like($id)
     {
         $meme = Meme::findorFail($id);
