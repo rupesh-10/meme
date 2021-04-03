@@ -1,13 +1,15 @@
 // import axios from "axios";
 
 const actions = {
-    getMemes({commit},payload){
-        var responseData;
-          axios.get(payload.endpoint,{params:payload.body}).then(
+    getMemes({commit}){
+        let responseData = {};
+         return axios.get('api/getMemes').then(
             response=>{
-                responseData = response.data;
+             responseData = response.data;
             }
         )
+
+        console.log(responseData)
         commit('setMemes',responseData)
     },
 }

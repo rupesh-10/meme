@@ -101,10 +101,8 @@
     </div>
 </template>
 <script>
+import {mapGetters,mapActions} from 'vuex';
 export default {
-    mounted(){
-        this.getMemes();
-    },
     data :function(){
         return {
             memes : {},
@@ -112,13 +110,12 @@ export default {
         }
     },
     methods: {
-        getMemes:function(){
-            axios.get('/api/getMemes').then(res=>{
-                this.memes = res.data.memes;
-                this.user = res.data.user;
-            })
-        },
+       ...mapActions(['getMemes'])
     },
+    computed: mapGetters(["allMemes"]),
+    created(){
+        this.getMemes();
+    }
 
 }
 </script>
