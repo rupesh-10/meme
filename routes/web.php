@@ -18,6 +18,7 @@ Route::get('/', function () {
     return redirect("feed");
 });
 
+Route::view('/welcome','welcome');
 Route::post('/connect/{id}', 'ConnectionController@connect')->name('connect');
 
 Route::post('/comment/{id}', "CommentController@store")->name('comment');

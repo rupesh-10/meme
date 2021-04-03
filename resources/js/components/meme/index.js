@@ -1,15 +1,15 @@
 require('../../bootstrap')
 
 window.Vue = require('vue');
-import Vuex from "vuex";
+import store from './store';
 
-Vue.use(Vuex);
-import Like from './LikeComponent';
-import Dislike from './DislikeComponent';
-import Meme from './MemeComponent';
+import Like from './components/LikeComponent';
+import Dislike from './components/DislikeComponent';
+import Meme from './components/MemeComponent';
 
 const app = new Vue({
     el: '#app',
+    store,
     components:{
         'like-component':Like,
         'dislike-component':Dislike,

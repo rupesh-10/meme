@@ -1,12 +1,12 @@
 require('../../bootstrap')
 
 window.Vue = require('vue');
-import Vuex from "vuex";
+import store from './store'
 
-Vue.use(Vuex);
-import Connect from './ConnectComponent';
+import Connect from './components/ConnectComponent';
 const app = new Vue({
     el: '#app',
+    store,
     components:{
         'connect-component':Connect,
     }
