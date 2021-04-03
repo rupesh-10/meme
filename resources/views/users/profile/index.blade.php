@@ -1,8 +1,8 @@
 @extends("layouts.app")
 @section('css')
 <style>
-@media only screen 
-  and (max-device-width: 736px) { 
+@media only screen
+  and (max-device-width: 736px) {
       .profile-head{
           justify-content:center;
           text-align: center;
@@ -30,7 +30,7 @@
                     @can('connect',$profile)
                     <connect-component user-id="{{$profile->user->id}}" connection="{{ $connection }}"></connect-component>
                     @endcan
-                    </div> 
+                    </div>
                     <div class="col-md-4">
                     @can('update',$profile)
                     <a class="text-primary" href="{{ action("ProfileController@edit",$profile->id) }}">Edit Profile</a>
@@ -63,4 +63,8 @@
     </div>
 </div>
 
+@endsection
+
+@section('js')
+<script src="{{ asset('js/profile/index.js') }}"></script>
 @endsection

@@ -15,17 +15,16 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    return redirect("home");
+    return redirect("feed");
 });
 
 Route::post('/connect/{id}', 'ConnectionController@connect')->name('connect');
-Route::get('/like/{id}', 'LikeDislikeController@like')->name('like');
-Route::get('/dislike/{id}', 'LikeDislikeController@dislike')->name('dislike');
+
 Route::post('/comment/{id}', "CommentController@store")->name('comment');
 Route::post('/comment/update/{id}', 'CommentController@update')->name('comment.update');
 Route::delete('/comment/destroy/{id}', 'CommentController@destroy')->name('comment.delete');
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/feed', 'HomeController@index')->name('feed');
 Route::resource('profile', 'ProfileController');
 Route::resource('memes', 'MemeController');

@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('/like/{id}', 'LikeDislikeController@like')->name('like');
+Route::get('/dislike/{id}', 'LikeDislikeController@dislike')->name('dislike');
+Route::get('/getMemes','HomeController@getMemes');

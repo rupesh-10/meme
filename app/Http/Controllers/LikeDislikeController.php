@@ -16,13 +16,13 @@ class LikeDislikeController extends Controller
     {
         $meme = Meme::findorFail($id);
         $meme->like();
-        return redirect()->back();
+        return response()->json(['message'=>"Liked Successfully!"]);
     }
 
     public function dislike($id)
     {
         $meme = Meme::findorFail($id);
         $meme->dislike();
-        return redirect()->back();
+        return response()->json(['message'=>"Hmm You disliked it!"]);
     }
 }

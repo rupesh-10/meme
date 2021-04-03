@@ -27,7 +27,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+        return view('home');
+    }
+    public function getMemes(){
         $memes = Meme::all();
-        return view('home', compact('memes'));
+        $currentUser = auth()->user()->with('profile')->get();
+        return response()->json(['memes'=>$memes,'user'=>$currentUser]);
     }
 }

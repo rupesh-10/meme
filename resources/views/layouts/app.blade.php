@@ -93,7 +93,7 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="{{ asset('js/script.js') }}"></script>
-    <script src="{{ asset('js/app.js') }}" defer></script>
+{{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
     @yield('js')
 </body>
 </html>

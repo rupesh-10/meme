@@ -1,24 +1,31 @@
 <template>
     <div>
-        <a class="p-2 d-flex text-dark" @click="dislike()"> <i v-bind:class="icon()"></i> </a>
+        <a class="p-2 d-flex text-dark" @click="like()"> <i v-bind:class="icon()"></i> </a>
     </div>
 </template>
 <script>
 export default {
-    props: ["memeId", "disliked"],
-
+    props: {
+        memeId:{
+            type:[String, Number],
+            required:true,
+        },
+        liked:{
+            type:[Boolean,Number],
+            required:true,
+        },
+    },
     mounted() {
-        console.log(this.memeId);
     },
     data: function() {
         return {
-            status: this.dislike
+            status: this.liked
         };
     },
     methods: {
-        dislike() {
+        like() {
             axios
-                .get("/dislike/" + this.memeId)
+                .get("/api/like/" + this.memeId)
                 .then(response => {
                     this.status = !this.status;
                     console.log(response.data);
@@ -31,8 +38,8 @@ export default {
         },
          icon() {
             return {
-                'fa-2x fas fa-thumbs-down text-dark' :this.status,
-                'fa-2x far fa-thumbs-down text-info' : !this.status
+                'fa-2x fas fa-thumbs-up text-dark' :this.status,
+                'fa-2x far fa-thumbs-up text-info' : !this.status
             }
         }
     },

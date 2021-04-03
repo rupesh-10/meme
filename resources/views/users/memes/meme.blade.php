@@ -40,7 +40,7 @@
                                     </span>
                                 @enderror
                         </div>
-                        
+
                     </div>
                     <div class="row">
                         <button class="btn btn-success ml-3" style="width: 95%;">Post</button>

@@ -4,11 +4,11 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+// require('./bootstrap');
 
-window.Vue = require('vue');
-import Connect from './components/ConnectComponent';
-import Dislike from './components/DislikeComponent';
+// window.Vue = require('vue');
+// import Connect from './components/ConnectComponent';
+// import Dislike from './components/DislikeComponent';
 
 /**
  * The following block of code may be used to automatically register your
@@ -30,10 +30,10 @@ import Dislike from './components/DislikeComponent';
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
-    el: '#app',
-    components:{
-        'connect-component':Connect,
-        'dislike-component':Dislike,
-    }
-});
+// const app = new Vue({
+//     el: '#app',
+//     components:{
+//         'connect-component':Connect,
+//         'dislike-component':Dislike,
+//     }
+// });
