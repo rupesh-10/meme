@@ -1,6 +1,6 @@
 {
-    "/js/app.js": "/js/app.js",
+    "/backend/js/app.js": "/backend/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/js/meme/index.js": "/js/meme/index.js",
-    "/js/profile/index.js": "/js/profile/index.js"
+    "/backend/js/user/meme/index.js": "/backend/js/user/meme/index.js",
+    "/backend/js/user/profile/index.js": "/backend/js/user/profile/index.js"
 }

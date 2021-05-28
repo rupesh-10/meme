@@ -1,4 +1,4 @@
-@extends('layouts.default')
+@extends('frontend.layouts.default')
 @section('content')
 	<section>
 		<div class="gap gray-bg">

@@ -20,7 +20,7 @@ class Meme extends Model
     public function like()
     {
         if ($this->liked()) {
-            $this->liked()->delete();
+            $this->likes()->where([['user_id',auth()->user()->id],['liked',1]])->delete();
         } else {
             $this->likeOrDislike(true);
         }
@@ -29,7 +29,7 @@ class Meme extends Model
     public function dislike()
     {
         if ($this->disliked()) {
-            $this->disliked()->delete();
+            $this->likes()->where([['user_id',auth()->user()->id],['liked',0]])->delete();
         } else {
             $this->likeOrDislike(false);
         }
@@ -47,14 +47,23 @@ class Meme extends Model
         );
     }
 
+
     public function liked()
     {
-        return $this->likes()->where([['user_id', auth()->user()->id], ['liked', true]])->first();
+        $liked = $this->likes()->where([['user_id',auth()->user()->id],['liked',1]])->first();
+        if($liked){
+            return true;
+        }
+        return false;
     }
 
     public function disliked()
     {
-        return $this->likes()->where([['user_id', auth()->user()->id], ['liked', false]])->first();
+        $disliked = $this->likes()->where([['user_id',auth()->user()->id],['liked',0]])->first();
+        if($disliked){
+            return true;
+        }
+        return false;
     }
 
     public function totalLikes()

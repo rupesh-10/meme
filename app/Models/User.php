@@ -20,8 +20,21 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'email_verified_at',
+        'two_factor_expires_at',
+        'two_factor_code'
     ];
 
+    protected $dates = [
+        'two_factor_expires_at',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'email_verified_at',
+    ];
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -47,6 +60,21 @@ class User extends Authenticatable
         static::created(function ($user) {
             $user->profile()->create();
         });
+    }
+
+    public function generateTwoFactorCode(){
+        $this->timestamps = false;
+        $this->two_factor_code = rand(100000,999999);
+        $this->two_factor_expires_at = now()->addMinute(15);
+        $this->save();
+
+    }
+
+    public function resetTwoFactorCode(){
+        $this->timestamps = false;
+        $this->two_factor_code = null;
+        $this->two_factor_expires_at = null;
+        $this->save();
     }
 
     public function connected()

@@ -15,17 +15,28 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    return redirect("feed");
+    return redirect("feeds");
 });
 
-Route::view('/welcome','welcome');
-Route::post('/connect/{id}', 'ConnectionController@connect')->name('connect');
+Route::view('/check_email','mails.two_factor_code_mail');
+Route::group(['middleware'=>['auth','twofactor'],'namespace'=>"User"],function(){
+    Route::view('/welcome','welcome');
+    Route::post('/connect/{id}', 'ConnectionController@connect')->name('connect');
+    Route::resource('/comment',"CommentController");
+    Route::resource('/feeds', 'FeedController',[
+        'names'=>[
+            'index'=>'feeds'
+        ]
+    ]);
+    Route::resource('profile', 'ProfileController');
+    Route::resource('memes', 'MemeController');
+});
 
-Route::post('/comment/{id}', "CommentController@store")->name('comment');
-Route::post('/comment/update/{id}', 'CommentController@update')->name('comment.update');
-Route::delete('/comment/destroy/{id}', 'CommentController@destroy')->name('comment.delete');
+
+//Authentications
+Route::post('verify/resend','Auth\TwoFactorAuthenticationController@resend')->name('verify.resend');
+Route::resource('verify','Auth\TwoFactorAuthenticationController')->only(['index','store']);
+
 Auth::routes();
 
-Route::get('/feed', 'HomeController@index')->name('feed');
-Route::resource('profile', 'ProfileController');
-Route::resource('memes', 'MemeController');
+
