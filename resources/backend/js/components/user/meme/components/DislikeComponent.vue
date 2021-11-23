@@ -8,6 +8,7 @@
     </div>
 </template>
 <script>
+import {mapGetters,mapActions} from 'vuex';
 export default {
     props: {
         memeId:{
@@ -28,24 +29,19 @@ export default {
             status: this.disliked
         };
     },
+      computed:{
+        meme: function(){
+            return this.$store.state.memes.find(meme=> meme.id = this.memeId)
+        }
+    },
     methods: {
         dislike() {
-            axios
-                .get("/api/dislike/" + this.memeId)
-                .then(response => {
-                    this.status = !this.status;
-                    console.log(response.data);
-                })
-                .catch(errors => {
-                    if (errors.response.status == 401) {
-                        // window.location = "/login";
-                    }
-                });
+            this.$store.dispatch('dislike',this.memeId)
         },
          icon() {
             return {
-                'fa-2x fas fa-frown text-danger' :this.status,
-                'fa-2x fas fa-frown text-dark' : !this.status
+                'fa-2x fas fa-frown text-danger' : this.meme.disliked,
+                'fa-2x fas fa-frown text-dark' : !this.meme.disliked
             }
         }
     },

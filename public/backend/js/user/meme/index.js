@@ -1967,6 +1967,7 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 //
 //
 //
@@ -1976,6 +1977,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     memeId: {
@@ -1994,22 +1996,23 @@ __webpack_require__.r(__webpack_exports__);
       status: this.disliked
     };
   },
-  methods: {
-    dislike: function dislike() {
+  computed: {
+    meme: function meme() {
       var _this = this;
 
-      axios.get("/api/dislike/" + this.memeId).then(function (response) {
-        _this.status = !_this.status;
-        console.log(response.data);
-      })["catch"](function (errors) {
-        if (errors.response.status == 401) {// window.location = "/login";
-        }
+      return this.$store.state.memes.find(function (meme) {
+        return meme.id = _this.memeId;
       });
+    }
+  },
+  methods: {
+    dislike: function dislike() {
+      this.$store.dispatch('dislike', this.memeId);
     },
     icon: function icon() {
       return {
-        'fa-2x fas fa-frown text-danger': this.status,
-        'fa-2x fas fa-frown text-dark': !this.status
+        'fa-2x fas fa-frown text-danger': this.meme.disliked,
+        'fa-2x fas fa-frown text-dark': !this.meme.disliked
       };
     }
   }
@@ -2026,6 +2029,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 //
 //
 //
@@ -2034,6 +2038,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     memeId: {
@@ -2046,28 +2051,23 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {},
-  data: function data() {
-    return {
-      status: this.liked
-    };
+  computed: {
+    meme: function meme() {
+      var _this = this;
+
+      return this.$store.state.memes.find(function (meme) {
+        return meme.id = _this.memeId;
+      });
+    }
   },
   methods: {
     like: function like() {
-      var _this = this;
-
-      axios.get("/api/like/" + this.memeId).then(function (response) {
-        _this.status = !_this.status;
-        console.log(response.data);
-      })["catch"](function (errors) {
-        if (errors.response.status == 401) {
-          window.location = "/login";
-        }
-      });
+      this.$store.dispatch('like', this.memeId);
     },
     icon: function icon() {
       return {
-        'fa-2x fas fa-grin-squint text-success': this.status,
-        'fa-2x fas fa-grin-squint text-dark': !this.status
+        'fa-2x fas fa-grin-squint text-success': this.meme.liked,
+        'fa-2x fas fa-grin-squint text-dark': !this.meme.liked
       };
     }
   }
@@ -52895,6 +52895,58 @@ var actions = {
         }
       }, _callee);
     }))();
+  },
+  like: function like(_ref2, memeId) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+      var commit;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              commit = _ref2.commit;
+              _context2.next = 3;
+              return axios.get("/api/like/" + memeId).then(function (response) {
+                commit('setLikes', memeId);
+                console.log(response.data);
+              })["catch"](function (errors) {
+                if (errors.response.status == 401) {
+                  window.location = "/login";
+                }
+              });
+
+            case 3:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }))();
+  },
+  dislike: function dislike(_ref3, memeId) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+      var commit;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              commit = _ref3.commit;
+              _context3.next = 3;
+              return axios.get("/api/dislike/" + memeId).then(function (response) {
+                commit('setDislikes', memeId);
+                console.log(response.data);
+              })["catch"](function (errors) {
+                if (errors.response.status == 401) {
+                  window.location = "/login";
+                }
+              });
+
+            case 3:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }))();
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (actions);
@@ -52972,6 +53024,36 @@ var mutations = {
    */
   setMemes: function setMemes(state, memes) {
     state.memes = memes;
+  },
+  setLikes: function setLikes(state, memeId) {
+    state.memes.find(function (meme) {
+      return meme.id === memeId;
+    }).liked = !state.memes.find(function (meme) {
+      return meme.id === memeId;
+    }).liked;
+
+    if (state.memes.find(function (meme) {
+      return meme.id === memeId;
+    }).disliked) {
+      state.memes.find(function (meme) {
+        return meme.id === memeId;
+      }).disliked = false;
+    }
+  },
+  setDislikes: function setDislikes(state, memeId) {
+    state.memes.find(function (meme) {
+      return meme.id === memeId;
+    }).disliked = !state.memes.find(function (meme) {
+      return meme.id === memeId;
+    }).disliked;
+
+    if (state.memes.find(function (meme) {
+      return meme.id === memeId;
+    }).liked) {
+      state.memes.find(function (meme) {
+        return meme.id === memeId;
+      }).liked = false;
+    }
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (mutations);
@@ -52988,7 +53070,9 @@ var mutations = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 var state = {
-  memes: {}
+  memes: {},
+  likeStatus: false,
+  dislikeStatus: false
 };
 /* harmony default export */ __webpack_exports__["default"] = (state);
 
