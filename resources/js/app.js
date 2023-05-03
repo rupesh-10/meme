@@ -9,6 +9,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 import Connect from './components/ConnectComponent';
 import Dislike from './components/DislikeComponent';
+import Like from './components/LikeComponent';
 
 /**
  * The following block of code may be used to automatically register your
@@ -20,7 +21,7 @@ import Dislike from './components/DislikeComponent';
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-// 
+//
 // Vue.component('connect-component', require('./components/ConnectComponent.vue'));
 // Vue.component('like-component',require('./components/LikeComponent.vue'));
 
@@ -35,5 +36,6 @@ const app = new Vue({
     components:{
         'connect-component':Connect,
         'dislike-component':Dislike,
+        'like-component' : Like,
     }
 });
